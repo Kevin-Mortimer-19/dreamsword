@@ -59,6 +59,7 @@ func _ready() -> void:
 	move_timer.wait_time = idle_time
 	move_timer.start()
 	notifier.screen_exited.connect(disappear)
+	GlobalSignals.camera_movement_started.connect(freeze)
 
 
 func _physics_process(_delta: float) -> void:
@@ -69,7 +70,6 @@ func _physics_process(_delta: float) -> void:
 		var c = get_slide_collision(i).get_collider()
 		if c is Player:
 			c.damage(position, damage_dealt)
-		
 
 
 func start_moving():
@@ -147,6 +147,11 @@ func knockback(source: Vector2) -> void:
 	velocity = direction * knockback_speed
 	move_timer.wait_time = knockback_time
 	move_timer.start()
+
+
+func freeze():
+	velocity = Vector2.ZERO
+	sprite.pause()
 
 
 func disappear() -> void:
