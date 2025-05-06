@@ -54,7 +54,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_71j4m"]
-size = Vector2(15.5, 11.625)
+size = Vector2(15.5, 13)
 
 [sub_resource type="Animation" id="Animation_k5hg5"]
 length = 0.001
@@ -93,7 +93,7 @@ _data = {
 &"jump": SubResource("Animation_algeo")
 }
 
-[node name="Spider" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "move_timer", "ray", "anim_player")]
+[node name="Spider" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "move_timer", "ray", "anim_player", "notifier")]
 collision_layer = 4
 collision_mask = 23
 motion_mode = 1
@@ -102,6 +102,7 @@ sprite = NodePath("AnimatedSprite2D")
 move_timer = NodePath("Timer")
 ray = NodePath("RayCast2D")
 anim_player = NodePath("AnimationPlayer")
+notifier = NodePath("VisibleOnScreenNotifier2D")
 idle_time = 2.0
 jump_time = 0.5
 crouch_time = 0.75
@@ -115,7 +116,7 @@ sprite_frames = SubResource("SpriteFrames_4mrxx")
 animation = &"crouch"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0.8125)
+position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_71j4m")
 
 [node name="Timer" type="Timer" parent="."]
@@ -128,5 +129,7 @@ collision_mask = 18
 libraries = {
 &"": SubResource("AnimationLibrary_d613k")
 }
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
 [connection signal="timeout" from="Timer" to="." method="start_moving"]

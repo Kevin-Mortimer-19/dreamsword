@@ -5,6 +5,7 @@ extends CharacterBody2D
 @export var move_timer: Timer
 @export var ray: RayCast2D
 @export var anim_player: AnimationPlayer
+@export var notifier: VisibleOnScreenNotifier2D
 
 @export_category("Movement")
 @export var idle_time: float
@@ -57,6 +58,7 @@ func _ready() -> void:
 	sprite.play("idle")
 	move_timer.wait_time = idle_time
 	move_timer.start()
+	notifier.screen_exited.connect(disappear)
 
 
 func _physics_process(_delta: float) -> void:
@@ -145,3 +147,7 @@ func knockback(source: Vector2) -> void:
 	velocity = direction * knockback_speed
 	move_timer.wait_time = knockback_time
 	move_timer.start()
+
+
+func disappear() -> void:
+	queue_free()

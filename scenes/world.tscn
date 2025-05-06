@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://bb86iqvi6dc81"]
+[gd_scene load_steps=6 format=4 uid="uid://bb86iqvi6dc81"]
 
 [ext_resource type="TileSet" uid="uid://b1qnhxc11yjv8" path="res://src/resources/overworld tiles.tres" id="1_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://mhxx4xmf0j3w" path="res://scenes/player.tscn" id="2_k0juu"]
 [ext_resource type="PackedScene" uid="uid://bhir5cqi74v4q" path="res://scenes/camera.tscn" id="4_k0juu"]
 [ext_resource type="PackedScene" uid="uid://fvvbybavaqbh" path="res://scenes/spider.tscn" id="5_71j4m"]
+[ext_resource type="PackedScene" uid="uid://b8ccsvwlm72mn" path="res://scenes/monster_spawner.tscn" id="5_qfnet"]
 
 [node name="World" type="Node2D"]
 texture_filter = 1
@@ -14,10 +15,11 @@ tile_map_data = PackedByteArray("AAAAAAAAAAACAAEAAAAAAAEAAAADAAEAAAAAAAIAAAACAAE
 tile_set = ExtResource("1_fj7yv")
 
 [node name="Player" parent="." instance=ExtResource("2_k0juu")]
-position = Vector2(69, 60)
-
-[node name="Spider" parent="." instance=ExtResource("5_71j4m")]
-position = Vector2(140, 162)
+position = Vector2(97, 99)
 
 [node name="Camera2D" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_k0juu")]
 player = NodePath("../Player")
+
+[node name="MonsterSpawner" parent="." instance=ExtResource("5_qfnet")]
+position = Vector2(170, 66)
+monster = ExtResource("5_71j4m")

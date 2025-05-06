@@ -4,10 +4,6 @@ extends Camera2D
 
 @export_category("Collision Boxes")
 @export var collision_boxes: Array[StaticBody2D]
-#@export var bottom_collision: StaticBody2D
-#@export var top_collision: StaticBody2D
-#@export var right_collision: StaticBody2D
-#@export var left_collision: StaticBody2D
 
 
 
@@ -41,6 +37,11 @@ func phase_camera_collision_boxes():
 		box.process_mode = Node.PROCESS_MODE_DISABLED
 
 
+func reset_game_after_camera_move() -> void:
+	player.process_mode = Node.PROCESS_MODE_INHERIT
+	dephase_camera_collision_boxes()
+
+
 func dephase_camera_collision_boxes():
 	for box in collision_boxes:
 		box.process_mode = Node.PROCESS_MODE_INHERIT
@@ -48,22 +49,30 @@ func dephase_camera_collision_boxes():
 
 func move_camera(direction: Vector2) -> void:
 	var tween = get_tree().create_tween()
+	var player_tween = get_tree().create_tween()
+	player.process_mode = Node.PROCESS_MODE_DISABLED
 	var target: Vector2 = position
+	var player_target = player.position
 	match direction:
 		Vector2.UP:
 			#position.y -= Map.TILE_HEIGHT
 			target.y -= Map.TILE_HEIGHT
+			player_target.y -= (Map.TILE_HEIGHT/16)
 		Vector2.DOWN:
 			#position.y += Map.TILE_HEIGHT
 			target.y += Map.TILE_HEIGHT
+			player_target.y += (Map.TILE_HEIGHT/16)
 		Vector2.LEFT:
 			#position.x -= Map.TILE_WIDTH
 			target.x -= Map.TILE_WIDTH
+			player_target.x -= (Map.TILE_WIDTH/16)
 		Vector2.RIGHT:
 			#position.x += Map.TILE_WIDTH
 			target.x += Map.TILE_WIDTH
+			player_target.x += (Map.TILE_WIDTH/16)
 		_:
 			push_error("Vector provided for function move_camera not a cardinal direction.")
 	GlobalSignals.camera_movement_started.emit()
-	tween.finished.connect(dephase_camera_collision_boxes)
+	tween.finished.connect(reset_game_after_camera_move)
 	tween.tween_property(self, "position", target, 0.75)
+	player_tween.tween_property(player, "position", player_target, 0.75)

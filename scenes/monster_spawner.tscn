@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8ccsvwlm72mn"]
+
+[ext_resource type="Script" uid="uid://c65h14ib8ilxf" path="res://src/scripts/monster_spawner.gd" id="1_7efvl"]
+
+[node name="MonsterSpawner" type="Node2D" node_paths=PackedStringArray("notifier")]
+script = ExtResource("1_7efvl")
+notifier = NodePath("VisibleOnScreenNotifier2D")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-16, -16, 32, 32)
