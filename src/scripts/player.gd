@@ -46,17 +46,6 @@ func _physics_process(_delta: float) -> void:
 	read_input()
 	animate()
 	move_and_slide()
-	#fix_sprite()
-	# Adding this code fixes the visual pixel blurring (as best I can tell), 
-	# but makes velocity uneven between opposite directions
-	#position.x = floorf(position.x)
-	#position.y = floorf(position.y)
-
-# This solution to the sprite bug won't work because the Sprite's position is always 0
-#func fix_sprite() -> void:
-	#sprite.position = Vector2(0,0)
-	#sprite.position.x = floorf(position.x)
-	#sprite.position.y = floorf(position.y)
 
 
 func read_input() -> void:
@@ -143,3 +132,4 @@ func animate():
 func animation_finish() -> void:
 	if sprite.animation == 'sword':
 		animationstate = PlayerAnim.IDLE
+		movestate = Movement.FREE

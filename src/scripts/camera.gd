@@ -12,6 +12,7 @@ func _ready() -> void:
 	position.x = floori(player.position.x / Map.TILE_WIDTH) * Map.TILE_WIDTH + (Map.TILE_WIDTH / 2)
 	position.y = floori(player.position.y / Map.TILE_HEIGHT) * Map.TILE_HEIGHT + (Map.TILE_HEIGHT / 2)
 	GlobalSignals.camera_movement_started.connect(phase_camera_collision_boxes)
+	Map.camera_position = position
 
 
 func _physics_process(_delta: float) -> void:
@@ -55,19 +56,15 @@ func move_camera(direction: Vector2) -> void:
 	var player_target = player.position
 	match direction:
 		Vector2.UP:
-			#position.y -= Map.TILE_HEIGHT
 			target.y -= Map.TILE_HEIGHT
 			player_target.y -= (Map.TILE_HEIGHT/16)
 		Vector2.DOWN:
-			#position.y += Map.TILE_HEIGHT
 			target.y += Map.TILE_HEIGHT
 			player_target.y += (Map.TILE_HEIGHT/16)
 		Vector2.LEFT:
-			#position.x -= Map.TILE_WIDTH
 			target.x -= Map.TILE_WIDTH
 			player_target.x -= (Map.TILE_WIDTH/16)
 		Vector2.RIGHT:
-			#position.x += Map.TILE_WIDTH
 			target.x += Map.TILE_WIDTH
 			player_target.x += (Map.TILE_WIDTH/16)
 		_:

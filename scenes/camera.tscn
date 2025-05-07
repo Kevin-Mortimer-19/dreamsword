@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://hy1jg5pdcmhk" path="res://src/scripts/camera.gd" id="1_cvpoc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k0juu"]
-size = Vector2(256, 1)
+size = Vector2(160, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_71j4m"]
-size = Vector2(1, 176)
+size = Vector2(1, 144)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qfnet"]
-size = Vector2(1, 176)
+size = Vector2(1, 144)
 
 [node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("collision_boxes")]
 process_callback = 0
@@ -37,7 +37,7 @@ collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightEdgeOfScreen"]
-position = Vector2(129, 0)
+position = Vector2(81, 0)
 shape = SubResource("RectangleShape2D_71j4m")
 
 [node name="LeftEdgeOfScreen" type="StaticBody2D" parent="."]
@@ -45,5 +45,5 @@ collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftEdgeOfScreen"]
-position = Vector2(-129, 0)
+position = Vector2(-81, 0)
 shape = SubResource("RectangleShape2D_qfnet")

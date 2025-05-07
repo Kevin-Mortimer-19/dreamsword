@@ -7,4 +7,3 @@ script = ExtResource("1_7efvl")
 notifier = NodePath("VisibleOnScreenNotifier2D")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-rect = Rect2(-16, -16, 32, 32)

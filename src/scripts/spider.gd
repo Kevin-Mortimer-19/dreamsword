@@ -18,6 +18,7 @@ enum State {
 	IDLE,
 	JUMP,
 	DAMAGE,
+	NULL,
 }
 
 var move_state: State
@@ -35,12 +36,12 @@ var health: int = 3
 # wall_distance: how far away a wall can be before the spider will avoid it
 # will_jump: boolean used for the state logic when deciding to jump
 var next_angle: Vector2
-var move_length: float = 48.0
+var move_length: float = 24.0
 var wall_distance: float = 24.0
 var will_jump: bool
+var parent_position: Vector2
 
 var damage_dealt = 1
-
 
 var move_vectors = [Vector2.UP, 
 					Vector2.UP.rotated(deg_to_rad(45)).normalized(), 
@@ -54,12 +55,17 @@ var move_vectors = [Vector2.UP,
 
 
 func _ready() -> void:
+	notifier.screen_exited.connect(disappear)
+	GlobalSignals.camera_movement_started.connect(freeze)
+	GlobalSignals.camera_movement_ended.connect(start)
+	parent_position = get_parent().position
+
+
+func start() -> void:
 	move_state = State.IDLE
 	sprite.play("idle")
 	move_timer.wait_time = idle_time
 	move_timer.start()
-	notifier.screen_exited.connect(disappear)
-	GlobalSignals.camera_movement_started.connect(freeze)
 
 
 func _physics_process(_delta: float) -> void:
@@ -86,6 +92,8 @@ func start_moving():
 			idle()
 		State.DAMAGE:
 			crouch()
+		State.NULL:
+			pass
 	move_timer.start()
 
 
@@ -112,7 +120,7 @@ func crouch():
 	for i in range(20):
 		next_angle = choose_angle()
 		ray.target_position = next_angle * move_length
-		if Map.within_camera_bounds(ray.target_position + position):
+		if Map.within_camera_bounds(ray.target_position + parent_position):
 			ray.target_position = next_angle * wall_distance
 			ray.force_raycast_update()
 			if not ray.is_colliding():

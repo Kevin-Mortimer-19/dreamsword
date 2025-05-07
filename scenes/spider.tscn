@@ -123,6 +123,7 @@ shape = SubResource("RectangleShape2D_71j4m")
 autostart = true
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 24)
 collision_mask = 18
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -131,5 +132,7 @@ libraries = {
 }
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(5.96046e-08, 1)
+scale = Vector2(0.75, 0.625)
 
 [connection signal="timeout" from="Timer" to="." method="start_moving"]
