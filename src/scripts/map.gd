@@ -1,7 +1,7 @@
 extends Node2D
 
 const TILE_WIDTH: int = 160
-const TILE_HEIGHT: int = 144
+const TILE_HEIGHT: int = 128
 
 var camera_position: Vector2
 

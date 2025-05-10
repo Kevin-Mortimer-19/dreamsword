@@ -8,12 +8,12 @@ var health = 3
 
 @export_category('Scenes')
 @export var sword: PackedScene
+@export var boots: PackedScene
 
 @export_category('Movement Data')
 @export var move_speed: int
 @export var knockback_time: float
 @export var knockback_speed: int
-
 
 enum Movement {
 	FREE,
@@ -28,6 +28,8 @@ enum PlayerAnim {
 	IDLE,
 }
 
+var items : Array[PackedScene] = [null, null]
+
 var movestate: Movement
 var animationstate: PlayerAnim
 
@@ -36,6 +38,8 @@ func _ready() -> void:
 	knockback_timer.wait_time = knockback_time
 	movestate = Movement.FREE
 	animationstate = PlayerAnim.IDLE
+	items[0] = sword
+	items[1] = sword
 
 
 func _process(_delta: float) -> void:
@@ -54,34 +58,46 @@ func read_input() -> void:
 		walk()
 		if velocity == Vector2(0,0) and animationstate == PlayerAnim.WALK:
 			animationstate = PlayerAnim.IDLE
-	if Input.is_action_just_pressed("ui_accept"):
-		swing_sword()
+	if Input.is_action_just_pressed("item1"):
+		useitem1()
+	elif Input.is_action_just_pressed('item2'):
+		useitem2()
 
 
 func walk() -> void:
 	var move_flag = false
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("move_left"):
 		velocity.x -= move_speed
 		move_flag = true
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("move_right"):
 		velocity.x += move_speed
 		move_flag = true
-	if Input.is_action_pressed("ui_up"):
+	if Input.is_action_pressed("move_up"):
 		velocity.y -= move_speed
 		move_flag = true
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("move_down"):
 		velocity.y += move_speed
 		move_flag = true
-	if move_flag:
+	if move_flag and movestate != Movement.SWORD:
 		animationstate = PlayerAnim.WALK
+
+
+func useitem1() -> void:
+	var i = items[0].instantiate()
+	i.player = self
+	add_child(i)
+
+
+func useitem2() -> void:
+	var i = items[1].instantiate()
+	i.player = self
+	add_child(i)
 
 
 func swing_sword():
 	if movestate == Movement.FREE:
 		movestate = Movement.SWORD
 		animationstate = PlayerAnim.SWORD
-		var s = sword.instantiate()
-		add_child(s)
 
 
 func damage(dmg_source: Vector2, dmg_value: int) -> void:
@@ -111,23 +127,22 @@ func knockback_end() -> void:
 func animate():
 	match animationstate:
 		PlayerAnim.WALK:
-			sprite.play('walk')
-		PlayerAnim.SWORD:
-			sprite.play('sword')
-		PlayerAnim.HURT:
-			sprite.play('hurt')
-		PlayerAnim.IDLE:
-			sprite.play('idle')
-	#if movestate == Movement.FREE:
-		#if velocity == Vector2(0,0):
-			#sprite.play('idle')
-		#else:
+			play_anim('walk')
 			#sprite.play('walk')
-	#elif movestate == Movement.DAMAGE:
-		#sprite.play('hurt')
-	#elif movestate == Movement.SWORD:
-		#sprite.play("sword")
+		PlayerAnim.SWORD:
+			play_anim('sword')
+			#sprite.play('sword')
+		PlayerAnim.HURT:
+			play_anim('hurt')
+			#sprite.play('hurt')
+		PlayerAnim.IDLE:
+			play_anim('idle')
+			#sprite.play('idle')
 
+
+func play_anim(anim_name: String) -> void:
+	if sprite.animation != anim_name:
+		sprite.play(anim_name)
 
 func animation_finish() -> void:
 	if sprite.animation == 'sword':
