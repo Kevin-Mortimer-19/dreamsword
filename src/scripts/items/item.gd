@@ -5,5 +5,9 @@ class_name Item extends Node
 var player: Player
 
 
+func _ready():
+	use()
+
+
 func use() -> void:
 	pass

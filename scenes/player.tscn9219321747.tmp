@@ -93,7 +93,7 @@ knockback_timer = NodePath("Knockback Timer")
 sprite = NodePath("AnimatedSprite2D")
 machine = NodePath("State Machine")
 sword = ExtResource("3_qhqgy")
-move_speed = 70
+move_speed = 75
 knockback_time = 0.25
 knockback_speed = 150
 
@@ -109,7 +109,6 @@ animation = &"walk"
 shape = SubResource("RectangleShape2D_71j4m")
 
 [node name="Knockback Timer" type="Timer" parent="."]
-one_shot = true
 
 [node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("player", "initial_state")]
 script = ExtResource("4_dqkch")

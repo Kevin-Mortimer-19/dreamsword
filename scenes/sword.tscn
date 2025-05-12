@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dc0l1gopw0dse"]
 
-[ext_resource type="Script" uid="uid://cjr122h0r7egi" path="res://src/scripts/sword.gd" id="1_n355p"]
+[ext_resource type="Script" uid="uid://cjr122h0r7egi" path="res://src/scripts/items/sword.gd" id="1_n355p"]
 [ext_resource type="Texture2D" uid="uid://343iptoiysnw" path="res://assets/sprites/sword.png" id="2_s4ec8"]
 
 [sub_resource type="Animation" id="Animation_fjrip"]

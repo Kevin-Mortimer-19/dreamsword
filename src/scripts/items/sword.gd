@@ -6,11 +6,7 @@ extends Item
 var damage = 1
 
 
-func _ready() -> void:
-	swing()
-
-
-func swing():
+func use():
 	player.swing_sword()
 	anim.play('swing')
 	anim.connect('animation_finished', end_swing)

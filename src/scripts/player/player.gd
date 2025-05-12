@@ -5,6 +5,7 @@ var health = 3
 @export_category('Node References')
 @export var knockback_timer: Timer
 @export var sprite: AnimatedSprite2D
+@export var machine: StateMachine
 
 @export_category('Scenes')
 @export var sword: PackedScene
@@ -53,11 +54,6 @@ func _physics_process(_delta: float) -> void:
 
 
 func read_input() -> void:
-	if movestate == Movement.FREE or movestate == Movement.SWORD:
-		velocity = Vector2(0,0)
-		walk()
-		if velocity == Vector2(0,0) and animationstate == PlayerAnim.WALK:
-			animationstate = PlayerAnim.IDLE
 	if Input.is_action_just_pressed("item1"):
 		useitem1()
 	elif Input.is_action_just_pressed('item2'):
@@ -65,21 +61,7 @@ func read_input() -> void:
 
 
 func walk() -> void:
-	var move_flag = false
-	if Input.is_action_pressed("move_left"):
-		velocity.x -= move_speed
-		move_flag = true
-	if Input.is_action_pressed("move_right"):
-		velocity.x += move_speed
-		move_flag = true
-	if Input.is_action_pressed("move_up"):
-		velocity.y -= move_speed
-		move_flag = true
-	if Input.is_action_pressed("move_down"):
-		velocity.y += move_speed
-		move_flag = true
-	if move_flag and movestate != Movement.SWORD:
-		animationstate = PlayerAnim.WALK
+	velocity = Input.get_vector('move_left', 'move_right', 'move_up', 'move_down').normalized() * move_speed
 
 
 func useitem1() -> void:
@@ -101,13 +83,11 @@ func swing_sword():
 
 
 func damage(dmg_source: Vector2, dmg_value: int) -> void:
-	if movestate != Movement.DAMAGE:
-		movestate = Movement.DAMAGE
+	if machine.current_state.name != 'Hurt':
+		machine.change_state('Hurt', {'dmg_source' : dmg_source})
 		health -= dmg_value
 		if health <= 0:
 			die()
-		else:
-			knockback(dmg_source)
 
 
 func die() -> void:
@@ -121,28 +101,39 @@ func knockback(source: Vector2) -> void:
 
 
 func knockback_end() -> void:
-	movestate = Movement.FREE
+	machine.change_state('Idle')
 
 
 func animate():
 	match animationstate:
 		PlayerAnim.WALK:
 			play_anim('walk')
-			#sprite.play('walk')
 		PlayerAnim.SWORD:
 			play_anim('sword')
-			#sprite.play('sword')
 		PlayerAnim.HURT:
 			play_anim('hurt')
-			#sprite.play('hurt')
 		PlayerAnim.IDLE:
 			play_anim('idle')
-			#sprite.play('idle')
 
 
 func play_anim(anim_name: String) -> void:
 	if sprite.animation != anim_name:
 		sprite.play(anim_name)
+
+
+func change_animation(new_animation: String) -> void:
+	match new_animation:
+		'Walk':
+			animationstate = PlayerAnim.WALK
+		'Idle':
+			animationstate = PlayerAnim.IDLE
+		'Hurt':
+			animationstate = PlayerAnim.HURT
+		'Sword':
+			animationstate = PlayerAnim.SWORD
+		_:
+			animationstate = PlayerAnim.IDLE
+
 
 func animation_finish() -> void:
 	if sprite.animation == 'sword':

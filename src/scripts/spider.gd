@@ -13,7 +13,7 @@ extends CharacterBody2D
 @export var crouch_time: float
 @export var knockback_time: float
 
-enum State {
+enum MoveState {
 	CROUCH,
 	IDLE,
 	JUMP,
@@ -21,7 +21,7 @@ enum State {
 	NULL,
 }
 
-var move_state: State
+var move_state: MoveState
 
 var move_speed = 80
 var knockback_speed = 100
@@ -62,14 +62,14 @@ func _ready() -> void:
 
 
 func start() -> void:
-	move_state = State.IDLE
+	move_state = MoveState.IDLE
 	sprite.play("idle")
 	move_timer.wait_time = idle_time
 	move_timer.start()
 
 
 func _physics_process(_delta: float) -> void:
-	if move_state == State.IDLE or move_state == State.CROUCH:
+	if move_state == MoveState.IDLE or move_state == MoveState.CROUCH:
 		velocity = Vector2(0,0)
 	move_and_slide()
 	for i in get_slide_collision_count():
@@ -81,18 +81,18 @@ func _physics_process(_delta: float) -> void:
 func start_moving():
 	sprite.play("jump")
 	match move_state:
-		State.CROUCH:
+		MoveState.CROUCH:
 			if will_jump:
 				jump()
 			else:
 				idle()
-		State.IDLE:
+		MoveState.IDLE:
 			crouch()
-		State.JUMP:
+		MoveState.JUMP:
 			idle()
-		State.DAMAGE:
+		MoveState.DAMAGE:
 			crouch()
-		State.NULL:
+		MoveState.NULL:
 			pass
 	move_timer.start()
 
@@ -101,7 +101,7 @@ func jump():
 	sprite.play("jump")
 	move_timer.wait_time = jump_time
 	velocity = next_angle * move_speed
-	move_state = State.JUMP
+	move_state = MoveState.JUMP
 	anim_player.play("jump")
 
 
@@ -109,7 +109,7 @@ func idle():
 	sprite.play("idle")
 	move_timer.wait_time = idle_time
 	velocity = Vector2(0,0)
-	move_state = State.IDLE
+	move_state = MoveState.IDLE
 	will_jump = false
 
 
@@ -128,7 +128,7 @@ func crouch():
 				break
 	sprite.play("crouch")
 	move_timer.wait_time = crouch_time
-	move_state = State.CROUCH
+	move_state = MoveState.CROUCH
 
 
 func choose_angle():
@@ -141,8 +141,8 @@ func die() -> void:
 
 
 func damage(dmg_source: Vector2, dmg_value: int) -> void:
-	if move_state != State.DAMAGE:
-		move_state = State.DAMAGE
+	if move_state != MoveState.DAMAGE:
+		move_state = MoveState.DAMAGE
 		health -= dmg_value
 		if health <= 0:
 			die()
