@@ -18,4 +18,5 @@ func end_swing(_name: String) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D:
-		body.damage(hitbox.position, damage)
+		print('hit')
+		body.damage(hitbox.global_position, damage)

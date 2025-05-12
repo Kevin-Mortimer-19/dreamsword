@@ -24,7 +24,7 @@ enum MoveState {
 var move_state: MoveState
 
 var move_speed = 80
-var knockback_speed = 100
+var knockback_speed = 150
 
 var rng = RandomNumberGenerator.new()
 
@@ -71,11 +71,12 @@ func start() -> void:
 func _physics_process(_delta: float) -> void:
 	if move_state == MoveState.IDLE or move_state == MoveState.CROUCH:
 		velocity = Vector2(0,0)
+	print(move_state)
 	move_and_slide()
-	for i in get_slide_collision_count():
-		var c = get_slide_collision(i).get_collider()
-		if c is Player:
-			c.damage(position, damage_dealt)
+	#for i in get_slide_collision_count():
+		#var c = get_slide_collision(i).get_collider()
+		#if c is Player:
+			#c.damage(position, damage_dealt)
 
 
 func start_moving():
@@ -91,7 +92,7 @@ func start_moving():
 		MoveState.JUMP:
 			idle()
 		MoveState.DAMAGE:
-			crouch()
+			idle()
 		MoveState.NULL:
 			pass
 	move_timer.start()
@@ -151,7 +152,7 @@ func damage(dmg_source: Vector2, dmg_value: int) -> void:
 
 
 func knockback(source: Vector2) -> void:
-	var direction = (position - source).normalized()
+	var direction = (global_position - source).normalized()
 	velocity = direction * knockback_speed
 	move_timer.wait_time = knockback_time
 	move_timer.start()
@@ -164,3 +165,8 @@ func freeze():
 
 func disappear() -> void:
 	queue_free()
+
+
+func deal_damage(body: Node2D) -> void:
+	if body is Player:
+		body.damage(global_position, damage_dealt)

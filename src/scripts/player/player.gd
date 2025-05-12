@@ -1,6 +1,6 @@
 class_name Player extends CharacterBody2D
 
-var health = 3
+var health = 6
 
 @export_category('Node References')
 @export var knockback_timer: Timer
