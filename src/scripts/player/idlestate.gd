@@ -6,10 +6,10 @@ func enter(_args: Dictionary = {}):
 
 
 func update(_delta: float) -> void:
-	if (Input.is_action_just_pressed('move_down')
-	or Input.is_action_just_pressed('move_up')
-	or Input.is_action_just_pressed('move_left')
-	or Input.is_action_just_pressed('move_right')):
+	if (Input.is_action_pressed('move_down')
+	or Input.is_action_pressed('move_up')
+	or Input.is_action_pressed('move_left')
+	or Input.is_action_pressed('move_right')):
 		machine.change_state('Walk')
 	else:
 		player.velocity = Vector2(0,0)

@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://b2a0kblyrn6f0" path="res://assets/sprites/hero.png" id="2_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://dc0l1gopw0dse" path="res://scenes/sword.tscn" id="3_qhqgy"]
 [ext_resource type="Script" uid="uid://bxcw1sd1vidpw" path="res://src/scripts/player/playerstatemachine.gd" id="4_dqkch"]
-[ext_resource type="Script" uid="uid://df8nbsn6mqpha" path="res://src/scripts/player/playerstate.gd" id="5_qlg0r"]
 [ext_resource type="Script" uid="uid://c18qcqtd062v4" path="res://src/scripts/player/idlestate.gd" id="5_tuyoq"]
 [ext_resource type="Script" uid="uid://wiysmktjeafh" path="res://src/scripts/player/walkstate.gd" id="6_fjrip"]
+[ext_resource type="Script" uid="uid://db44shwbbip5g" path="res://src/scripts/player/swordstate.gd" id="7_smehm"]
 [ext_resource type="Script" uid="uid://don3uj5hu42np" path="res://src/scripts/player/hurtstate.gd" id="8_smehm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
@@ -123,7 +123,7 @@ script = ExtResource("5_tuyoq")
 script = ExtResource("6_fjrip")
 
 [node name="Sword" type="Node" parent="State Machine"]
-script = ExtResource("5_qlg0r")
+script = ExtResource("7_smehm")
 
 [node name="Hurt" type="Node" parent="State Machine"]
 script = ExtResource("8_smehm")

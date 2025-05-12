@@ -16,12 +16,6 @@ var health = 3
 @export var knockback_time: float
 @export var knockback_speed: int
 
-enum Movement {
-	FREE,
-	DAMAGE,
-	SWORD,
-}
-
 enum PlayerAnim {
 	WALK,
 	SWORD,
@@ -31,13 +25,11 @@ enum PlayerAnim {
 
 var items : Array[PackedScene] = [null, null]
 
-var movestate: Movement
 var animationstate: PlayerAnim
 
 
 func _ready() -> void:
 	knockback_timer.wait_time = knockback_time
-	movestate = Movement.FREE
 	animationstate = PlayerAnim.IDLE
 	items[0] = sword
 	items[1] = sword
@@ -77,9 +69,7 @@ func useitem2() -> void:
 
 
 func swing_sword():
-	if movestate == Movement.FREE:
-		movestate = Movement.SWORD
-		animationstate = PlayerAnim.SWORD
+	machine.change_state('Sword')
 
 
 func damage(dmg_source: Vector2, dmg_value: int) -> void:
@@ -136,6 +126,5 @@ func change_animation(new_animation: String) -> void:
 
 
 func animation_finish() -> void:
-	if sprite.animation == 'sword':
-		animationstate = PlayerAnim.IDLE
-		movestate = Movement.FREE
+	if machine.current_state.name == 'Sword':
+		machine.change_state('Idle')
