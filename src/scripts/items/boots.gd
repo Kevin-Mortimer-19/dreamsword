@@ -2,4 +2,4 @@ extends Item
 
 
 func use():
-	print('dash')
+	player.start_dash()

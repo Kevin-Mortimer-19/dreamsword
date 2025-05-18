@@ -71,12 +71,7 @@ func start() -> void:
 func _physics_process(_delta: float) -> void:
 	if move_state == MoveState.IDLE or move_state == MoveState.CROUCH:
 		velocity = Vector2(0,0)
-	print(move_state)
 	move_and_slide()
-	#for i in get_slide_collision_count():
-		#var c = get_slide_collision(i).get_collider()
-		#if c is Player:
-			#c.damage(position, damage_dealt)
 
 
 func start_moving():

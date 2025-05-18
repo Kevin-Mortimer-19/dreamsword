@@ -1,13 +1,15 @@
-[gd_scene load_steps=19 format=3 uid="uid://mhxx4xmf0j3w"]
+[gd_scene load_steps=21 format=3 uid="uid://mhxx4xmf0j3w"]
 
 [ext_resource type="Script" uid="uid://bo5rsr0dglwnx" path="res://src/scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://b2a0kblyrn6f0" path="res://assets/sprites/hero.png" id="2_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://dc0l1gopw0dse" path="res://scenes/sword.tscn" id="3_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://bp4q4a5f1o0yl" path="res://scenes/boots.tscn" id="3_y4r1p"]
 [ext_resource type="Script" uid="uid://bxcw1sd1vidpw" path="res://src/scripts/player/playerstatemachine.gd" id="4_dqkch"]
 [ext_resource type="Script" uid="uid://c18qcqtd062v4" path="res://src/scripts/player/idlestate.gd" id="5_tuyoq"]
 [ext_resource type="Script" uid="uid://wiysmktjeafh" path="res://src/scripts/player/walkstate.gd" id="6_fjrip"]
 [ext_resource type="Script" uid="uid://db44shwbbip5g" path="res://src/scripts/player/swordstate.gd" id="7_smehm"]
 [ext_resource type="Script" uid="uid://don3uj5hu42np" path="res://src/scripts/player/hurtstate.gd" id="8_smehm"]
+[ext_resource type="Script" uid="uid://b4k6uaxsfh1wj" path="res://src/scripts/player/dashstate.gd" id="9_ur7pv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
 
@@ -86,14 +88,18 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_71j4m"]
 size = Vector2(10, 16)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("knockback_timer", "sprite", "machine")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("timer", "sprite", "machine")]
 collision_mask = 3
 script = ExtResource("1_g2els")
-knockback_timer = NodePath("Knockback Timer")
+timer = NodePath("Movement Timer")
 sprite = NodePath("AnimatedSprite2D")
 machine = NodePath("State Machine")
 sword = ExtResource("3_qhqgy")
+boots = ExtResource("3_y4r1p")
 move_speed = 70
+dash_speed = 140
+dash_time = 0.25
+run_speed = 100
 knockback_time = 0.25
 knockback_speed = 150
 
@@ -108,7 +114,7 @@ animation = &"walk"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_71j4m")
 
-[node name="Knockback Timer" type="Timer" parent="."]
+[node name="Movement Timer" type="Timer" parent="."]
 one_shot = true
 
 [node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("player", "initial_state")]
@@ -128,5 +134,8 @@ script = ExtResource("7_smehm")
 [node name="Hurt" type="Node" parent="State Machine"]
 script = ExtResource("8_smehm")
 
+[node name="Dash" type="Node" parent="State Machine"]
+script = ExtResource("9_ur7pv")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="animation_finish"]
-[connection signal="timeout" from="Knockback Timer" to="." method="knockback_end"]
+[connection signal="timeout" from="Movement Timer" to="." method="timer_end"]

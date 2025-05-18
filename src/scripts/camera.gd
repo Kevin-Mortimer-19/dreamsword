@@ -40,6 +40,7 @@ func phase_camera_collision_boxes():
 
 func reset_game_after_camera_move() -> void:
 	player.process_mode = Node.PROCESS_MODE_INHERIT
+	player.machine.change_state('Idle')
 	dephase_camera_collision_boxes()
 
 
